@@ -8,19 +8,27 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      <row-component
+        v-for="otu in otuList"
+        :key="otu.id"
+        :otu="otu"/>
     </tbody>
   </table>
 </template>
 
 <script>
+
+import RowComponent from './Row'
+
 export default {
+  components: {
+    RowComponent
+  },
   props: {
     otuList: {
+      type: Array
+    },
+    taxonList: {
       type: Array
     }
   }
