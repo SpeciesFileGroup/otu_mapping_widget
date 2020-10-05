@@ -14,7 +14,11 @@ Inspired by the mapper between OTUs and names in the [Open Tree of Life](https:/
 
 # Installation
 
-_TODO_
+```bash
+npm install
+
+npm run serve
+```
 
 # Lisence
 
