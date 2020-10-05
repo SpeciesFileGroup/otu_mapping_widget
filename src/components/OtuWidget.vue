@@ -15,7 +15,7 @@
 <script>
 
 import ListComponent from './List'
-import MappingView from './MappingView'
+import MappingView from './Regex/Main'
 
 export default {
   components: {
