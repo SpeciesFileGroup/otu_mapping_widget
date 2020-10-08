@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <OtuWidget
-      :otu-list="otuList"
-      :taxon-list="taxonList"/>
+      :name-list="otuList"
+      column-name="Otu"
+      column-match="Taxon name"
+      :possible-matches-list="taxonList"
+      @matched="setMatches"/>
   </div>
 </template>
 
@@ -20,7 +23,13 @@ export default {
   data () {
     return {
       otuList: OtuList,
-      taxonList: taxonNames
+      taxonList: taxonNames,
+      matchedList: []
+    }
+  },
+  methods: {
+    setMatches (list) {
+      this.matchedList = list
     }
   }
 }

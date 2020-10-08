@@ -2,13 +2,16 @@
   <div>
     <mapping-view
       v-model="mappingOptions"
-      @mapping="mappingTaxon"/>
+      @mapping="mappingList"/>
     <list-component
       v-model="selectedOtus"
-      :otu-list="otuList"
-      :taxon-list="taxonList"
+      :name-list="nameList"
+      :column-name="columnName"
+      :column-match="columnMatch"
+      :taxon-list="possibleMatchesList"
       :temporary-name-list="temporaryNameList"
-      :mapped-taxon="mappedTaxon"/>
+      :mapped-list="mappedList"
+      @matched="addMatched"/>
   </div>
 </template>
 
@@ -23,13 +26,21 @@ export default {
     MappingView
   },
   props: {
-    otuList: {
+    nameList: {
       type: Array,
       default: () => []
     },
-    taxonList: {
+    possibleMatchesList: {
       type: Array,
       default: () => []
+    },
+    columnName: {
+      type: String,
+      required: true
+    },
+    columnMatch: {
+      type: String,
+      required: true
     }
   },
   data () {
@@ -37,14 +48,15 @@ export default {
       mappers: [],
       mappingOptions: [],
       temporaryNameList: [],
-      mappedTaxon: [],
-      selectedOtus: []
+      mappedList: [],
+      selectedOtus: [],
+      matchedNames: []
     }
   },
   watch: {
     mappingOptions: {
       handler (newVal) {
-        this.temporaryNameList = this.otuList.map(otu => this.getTemporaryName(otu.name))
+        this.temporaryNameList = this.nameList.map(otu => this.getTemporaryName(otu.name))
       },
       deep: true
     }
@@ -61,8 +73,13 @@ export default {
       })
       return name.trim()
     },
-    mappingTaxon () {
-      this.mappedTaxon = this.temporaryNameList.map(name => this.taxonList.filter(taxon => taxon.name === name))
+    mappingList () {
+      this.mappedList = this.temporaryNameList.map(name => this.possibleMatchesList.filter(taxon => taxon.name === name))
+    },
+    addMatched (event) {
+      this.matchedNames.push(event.mapped)
+      this.nameList.splice(event.index, 1)
+      this.mappedList.splice(event.index, 1)
     }
   }
 }
